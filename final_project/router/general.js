@@ -43,19 +43,43 @@ public_users.get('/author/:author',function (req, res) {
   filteredBooks.forEach((isbn, index) => {
     filteredBooks[index] = books[isbn]
   })
-  return res.status(200).send(filteredBooks);
+
+  if (filteredBooks){
+    return res.status(200).send(filteredBooks);
+  } else {
+    return res.status(404).json({message : "Books with author not found"})
+  }
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  let title = req.params.title
+  const bookKeys = Object.keys(books)
+
+  console.log("in title route")
+  for (const isbn of bookKeys){
+    console.log("in for loop")
+    if (books[isbn].title === title){
+        console.log("found book")
+        console.log(books[isbn])
+        return res.status(200).send(books[isbn])
+    }
+  }
+
+  return res.status(404).json({message: "Book with title not found :C"});
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  let isbn = req.params.isbn
+  if (isbn){
+    return res.status(200).send(books[isbn].reviews)
+  } else {
+    return res.status(404).json({message: "Book with ISBN not found, reviews not found"});
+  }
+  
 });
 
 module.exports.general = public_users;
