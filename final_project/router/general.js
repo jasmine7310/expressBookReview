@@ -13,6 +13,8 @@ public_users.post("/register", (req,res) => {
     return res.status(404).json({message: "Username or password not provided"})
   }
 
+  console.log(users)
+
   if (isValid(username)){
     return res.status(404).json({message: "Username already exists, please provide another"})
   }
